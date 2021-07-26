@@ -1,13 +1,14 @@
 package com.experis.assignment.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -50,5 +51,22 @@ public class Movie {
     @OneToOne
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
+
+    @JsonGetter("characters")
+    public List<String> characters() {
+        if(characters != null) {
+            return characters.stream()
+                    .map(character -> {
+                        return character.getAlias() + ":\n/api/v1/characters/" + character.getId();
+                    }).collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    @JsonGetter("franchise")
+    public String franchise() {
+        return (franchise != null) ? "/api/v1/franchises/" + franchise.getId() : null;
+    }
 
 }
