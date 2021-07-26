@@ -3,11 +3,9 @@ package com.experis.assignment.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.net.URL;
+import java.util.ArrayList;
 
 @Entity
 @Table
@@ -32,5 +30,8 @@ public class Character {
 
     @Column
     private URL picture;
+
+    @ManyToMany(mappedBy = "characters")
+    private ArrayList<Movie> movies;
 
 }
