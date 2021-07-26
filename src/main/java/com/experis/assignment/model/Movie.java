@@ -29,11 +29,11 @@ public class Movie {
     private String directorName;
 
     @Column
-    private URL picture;
+    private String picture;
 
     @Column
-    private URL trailer;
-
+    private String trailer;
+/*
     @ManyToMany
     @JoinTable(
             name ="title",
@@ -45,4 +45,5 @@ public class Movie {
     @OneToOne
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
+ */
 }

@@ -26,12 +26,12 @@ public class Character {
     private String alias;
 
     @Column
-    private GenderType gender;
+    private String gender;
 
     @Column
-    private URL picture;
-
+    private String picture;
+/*
     @ManyToMany(mappedBy = "characters")
     private ArrayList<Movie> movies;
-
+*/
 }
