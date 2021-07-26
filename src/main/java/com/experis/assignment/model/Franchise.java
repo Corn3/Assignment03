@@ -3,10 +3,8 @@ package com.experis.assignment.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 @Table
@@ -22,4 +20,9 @@ public class Franchise {
 
     @Column
     private String description;
+
+    @OneToMany
+    @JoinColumn(name = "movie_id")
+    private ArrayList<Movie> movies;
+
 }

@@ -3,11 +3,9 @@ package com.experis.assignment.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.net.URL;
+import java.util.ArrayList;
 
 @Entity
 @Table
@@ -35,4 +33,16 @@ public class Movie {
 
     @Column
     private URL trailer;
+
+    @ManyToMany
+    @JoinTable(
+            name ="title",
+            joinColumns = {@JoinColumn(name = "movie_id")},
+            inverseJoinColumns = {@JoinColumn(name = "character_id")}
+    )
+    private ArrayList<Character> characters;
+
+    @OneToOne
+    @JoinColumn(name = "franchise_id")
+    private Franchise franchise;
 }
