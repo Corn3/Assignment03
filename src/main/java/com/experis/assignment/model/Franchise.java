@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -20,9 +21,8 @@ public class Franchise {
 
     @Column
     private String description;
-/*
+
     @OneToMany
     @JoinColumn(name = "movie_id")
-    private ArrayList<Movie> movies;
-*/
+    private List<Movie> movies;
 }

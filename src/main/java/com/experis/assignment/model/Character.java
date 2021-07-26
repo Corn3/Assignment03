@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -16,10 +17,10 @@ public class Character {
     @Id
     private long id;
 
-    @Column
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column
+    @Column(name = "last_name")
     private String lastName;
 
     @Column
@@ -29,9 +30,9 @@ public class Character {
     private String gender;
 
     @Column
-    private String picture;
-/*
+    private URL picture;
+
     @ManyToMany(mappedBy = "characters")
-    private ArrayList<Movie> movies;
-*/
+    private List<Movie> movies;
+
 }

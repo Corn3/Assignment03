@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -29,21 +30,21 @@ public class Movie {
     private String directorName;
 
     @Column
-    private String picture;
+    private URL picture;
 
     @Column
-    private String trailer;
-/*
+    private URL trailer;
+
     @ManyToMany
     @JoinTable(
-            name ="title",
+            name ="movie_character",
             joinColumns = {@JoinColumn(name = "movie_id")},
             inverseJoinColumns = {@JoinColumn(name = "character_id")}
     )
-    private ArrayList<Character> characters;
+    private List<Character> characters;
 
     @OneToOne
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
- */
+
 }
