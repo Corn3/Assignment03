@@ -20,9 +20,9 @@ public class Franchise {
 
     @Column
     private String description;
-
+/*
     @OneToMany
     @JoinColumn(name = "movie_id")
     private ArrayList<Movie> movies;
-
+*/
 }
