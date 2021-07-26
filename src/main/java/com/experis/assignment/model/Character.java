@@ -1,6 +1,7 @@
 package com.experis.assignment.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +12,17 @@ import java.net.URL;
 @Entity
 @Table
 @Getter
+@Setter
 public class Character {
 
     @Id
     private long id;
 
     @Column
-    private String fullName;
+    private String firstName;
+
+    @Column
+    private String lastName;
 
     @Column
     private String alias;
@@ -27,7 +32,5 @@ public class Character {
 
     @Column
     private URL picture;
-
-    //public Character(String fullName, String alias, )
 
 }
