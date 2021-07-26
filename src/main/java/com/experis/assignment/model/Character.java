@@ -1,11 +1,11 @@
 package com.experis.assignment.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +32,8 @@ public class Character {
     @Column
     private URL picture;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @ManyToMany(mappedBy = "characters")
     private List<Movie> movies;
 

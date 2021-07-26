@@ -1,5 +1,6 @@
 package com.experis.assignment.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,6 +42,8 @@ public class Movie {
             joinColumns = {@JoinColumn(name = "movie_id")},
             inverseJoinColumns = {@JoinColumn(name = "character_id")}
     )
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private List<Character> characters;
 
     @OneToOne
