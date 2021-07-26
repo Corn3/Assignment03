@@ -20,16 +20,16 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 150)
+    @Column(length = 150, nullable = false)
     private String genre;
 
-    @Column(name = "release_year", length = 4)
+    @Column(name = "release_year", length = 4, nullable = false)
     private int releaseYear;
 
-    @Column(name = "director_name", length = 50)
+    @Column(name = "director_name", length = 50, nullable = false)
     private String directorName;
 
     @Column
