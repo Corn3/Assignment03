@@ -23,10 +23,10 @@ public class Movie {
     @Column
     private String genre;
 
-    @Column
+    @Column(name = "release_year")
     private int releaseYear;
 
-    @Column
+    @Column(name = "director_name")
     private String directorName;
 
     @Column
