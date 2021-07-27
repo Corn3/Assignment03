@@ -2,6 +2,7 @@ package com.experis.assignment.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +13,11 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table
-@Getter
-@Setter
+@Data
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(length = 50, nullable = false)
@@ -38,17 +38,16 @@ public class Movie {
     @Column
     private URL trailer;
 
+    @Setter(AccessLevel.NONE)
     @ManyToMany
     @JoinTable(
             name ="movie_character",
             joinColumns = {@JoinColumn(name = "movie_id")},
             inverseJoinColumns = {@JoinColumn(name = "character_id")}
     )
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     private List<Character> characters;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
@@ -57,7 +56,7 @@ public class Movie {
         if(characters != null) {
             return characters.stream()
                     .map(character -> {
-                        return character.getAlias() + ":\n/api/v1/characters/" + character.getId();
+                        return "/api/v1/characters/" + character.getId();
                     }).collect(Collectors.toList());
         } else {
             return null;
@@ -69,4 +68,7 @@ public class Movie {
         return (franchise != null) ? "/api/v1/franchises/" + franchise.getId() : null;
     }
 
+    public void addCharacter(Character character) {
+        characters.add(character);
+    }
 }
