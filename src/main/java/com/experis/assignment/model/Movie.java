@@ -39,6 +39,7 @@ public class Movie {
     private URL trailer;
 
     @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
     @ManyToMany
     @JoinTable(
             name ="movie_character",
