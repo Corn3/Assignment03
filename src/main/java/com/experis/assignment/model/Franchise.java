@@ -9,6 +9,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Lombok is used here to minimize boiler plate code.
+ */
 @Entity
 @Table
 @Getter
@@ -31,6 +34,12 @@ public class Franchise {
     @JoinColumn(name = "franchise_id")
     private List<Movie> movies;
 
+    /**
+     * Creates a list of endpoints for movies to minimize the amount of data displayed
+     * when retrieving a Franchise.
+     *
+     * @return a list of endpoints to be displayed to the user.
+     */
     @JsonGetter("movies")
     public List<String> movies() {
         if(movies != null) {
