@@ -111,6 +111,6 @@ public class MovieService {
     }
 
     public List<Character> getCharactersInMovie(long id) {
-        return repository.findById(id).get().getCharacters();
+        return actorRepository.findByMovies(repository.findById(id).get());
     }
 }
