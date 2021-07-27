@@ -52,4 +52,12 @@ public class Character {
         }
     }
 
+    public void addMovie(Movie movie) {
+        movies.add(movie);
+    }
+
+    public void removeMovie(Movie movie) {
+        movies.remove(movie);
+    }
+
 }

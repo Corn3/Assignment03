@@ -1,6 +1,7 @@
 package com.experis.assignment.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,8 +25,10 @@ public class Franchise {
     @Column
     private String description;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @OneToMany
-    @JoinColumn(name = "movie_id")
+    @JoinColumn(name = "franchise_id")
     private List<Movie> movies;
 
     @JsonGetter("movies")
@@ -40,4 +43,11 @@ public class Franchise {
         }
     }
 
+    public void addMovie(Movie movie) {
+        movies.add(movie);
+    }
+
+    public void removeMovie(Movie movie) {
+        movies.remove(movie);
+    }
 }
