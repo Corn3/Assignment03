@@ -12,4 +12,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Movie findByTitle(String title);
     boolean existsByTitle(String title);
     List<Movie> findByFranchise(Franchise franchise);
+    List<Movie> getAllByFranchiseId(long id);
 }
