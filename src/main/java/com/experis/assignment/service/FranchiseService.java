@@ -36,7 +36,11 @@ public class FranchiseService {
     }
 
     /**
-     *
+     * Retrieves a list of characters that are part of a franchise. In order to fetch these,
+     * all movies for the specific franchise must be retrieved and then the characters that partook
+     * in those movies can be returned.
+     * <p>
+     * This method always returns a list of non-duplicate characters.
      *
      * @param id used to get a franchise.
      * @return a list of characters for a given franchise,
