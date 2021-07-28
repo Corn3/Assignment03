@@ -59,7 +59,6 @@ public class FranchiseService {
     }
 
 
-
     public List<Movie> getMoviesInFranchise(long id) {
         return movieRepository.getAllByFranchiseId(id);
     }
@@ -88,18 +87,35 @@ public class FranchiseService {
         return repository.save(franchise);
     }
 
+    /**
+     * Removes a franchise in the database specified by the parameter id
+     * <p>
+     * This method returns a boolean indicating if the
+     * operation was successful or not.
+     *
+     * @param id the franchise primary key
+     * @return a boolean indicating if the operation was successful
+     */
     public boolean removeFranchise(long id) {
         boolean found = repository.existsById(id);
         if(found){
             Franchise franchise = repository.getById(id);
-            // ensure movies are not deleted
-
             repository.delete(franchise);
         }
         return found;
     }
 
-
+    /**
+     * Updates a franchise's movies in the database specified by the parameter id
+     * and movie specified by the parameter movieId
+     * <p>
+     * This method returns a franchise object and a http status indicating if the
+     * operation was successful or not.
+     *
+     * @param id the franchise primary key
+     * @param movieId the movies primary key
+     * @return an updated franchise
+     */
     public Franchise updateFranchiseWithMovie(long id, long movieId) {
         Optional<Franchise> optionalFranchise = repository.findById(id);
         if(optionalFranchise.isEmpty()){

@@ -43,7 +43,15 @@ public class FranchiseController {
         return new ResponseEntity<>(characters, status);
     }
 
-    // add a franchise
+    /**
+     * Adds a franchise passed as a parameter using the REST operation POST
+     * <p>
+     * This method adds a franchise and returns a status indicating if the
+     * operation was successful or not.
+     *
+     * @param franchise to be added to the database
+     * @return added franchise with the corresponding HTTP status
+     */
     @RequestMapping(value="", method = RequestMethod.POST)
     public ResponseEntity<Franchise> addFranchise(@RequestBody Franchise franchise){
         Franchise returnFranchise = franchiseService.save(franchise);
@@ -51,6 +59,15 @@ public class FranchiseController {
         return new ResponseEntity<>(returnFranchise, status);
     }
 
+    /**
+     * Gets all movies in a franchise using the parameter id and the REST operation GET
+     * <p>
+     * This method returns a list of movies and returns a status indicating if the
+     * operation was successful or not.
+     *
+     * @param id of the franchise
+     * @return a list of movies in the franchise with the corresponding HTTP status
+     */
     @RequestMapping(value = "/{id}/movies", method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> getAllMoviesInFranchise(@PathVariable long id) {
         List<Movie> movies = null;
@@ -62,8 +79,15 @@ public class FranchiseController {
         return new ResponseEntity<>(movies, status);
     }
 
-
-    // get a franchise
+    /**
+     * Gets a franchise using the REST operation GET using the  parameter id
+     * <p>
+     * This method returns a franchise object and status indicating if the
+     * operation was successful or not.
+     *
+     * @param id used for finding a franchise.
+     * @return a franchise if found as well as the corresponding HTTP status
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Franchise> getAFranchise(@PathVariable long id){
         HttpStatus status;
@@ -78,7 +102,14 @@ public class FranchiseController {
 
     }
 
-    // get all franchises
+    /**
+     * Gets all franchises in the database using the REST operation GET
+     * <p>
+     * This method returns a list of franchises and returns a status indicating if the
+     * operation was successful or not.
+     *
+     * @return a list of franchises with the corresponding HTTP status
+     */
     @RequestMapping(value="", method = RequestMethod.GET)
     public ResponseEntity<List<Franchise>> getAllFranchises(){
         List<Franchise> data = franchiseService.findAll();
@@ -86,7 +117,16 @@ public class FranchiseController {
         return new ResponseEntity<>(data, status);
     }
 
-    // update a franchise
+    /**
+     * Updates a franchise specified with the parameter id and the REST operation PUT
+     * <p>
+     * This method returns a franchise object and a status indicating if the
+     * operation was successful or not.
+     *
+     * @param id of the franchise
+     * @param updatedFranchise the data used to update the franchise
+     * @return an updated franchise with the corresponding HTTP status
+     */
     @RequestMapping(value="/{id}", method= RequestMethod.PUT)
     public ResponseEntity<Franchise> updateFranchise(@PathVariable long id, @RequestBody Franchise updatedFranchise){
         HttpStatus status;
@@ -109,7 +149,15 @@ public class FranchiseController {
         return new ResponseEntity<>(franchise, status);
     }
 
-    // delete a franchise
+    /**
+     * Deletes a franchise in the database specified by the parameter id using the REST operation DELETE
+     * <p>
+     * This method returns a boolean and a status indicating if the
+     * operation was successful or not.
+     *
+     * @param id the franchise primary key
+     * @return a boolean and http status indicating if the operation was successful
+     */
     @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteFranchise(@PathVariable long id){
         HttpStatus status;
@@ -122,7 +170,17 @@ public class FranchiseController {
         return new ResponseEntity<>(deleted, status);
     }
 
-    // updating movies in a franchise
+    /**
+     * Updates movies in a franchise specified by the parameter id and movie using its movieId
+     * using the REST operation DELETE
+     * <p>
+     * This method returns an updated franchise object  and a status indicating if the
+     * operation was successful or not.
+     *
+     * @param id the franchise primary key
+     * @param movieId the movies primary key
+     * @return an updated franchise and http status indicating if the operation was successful or not
+     */
     @RequestMapping(value="/{id}/movies/{movieId}", method = RequestMethod.PUT)
     public ResponseEntity<Franchise> updateMovieInFranchise(@PathVariable long id,
                                                             @PathVariable long movieId) {
@@ -130,7 +188,4 @@ public class FranchiseController {
         HttpStatus status = (franchise == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
         return new ResponseEntity<>(franchise, status);
     }
-
-
-
 }
