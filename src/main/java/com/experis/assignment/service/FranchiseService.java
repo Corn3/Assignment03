@@ -4,14 +4,12 @@ import com.experis.assignment.dao.CharacterRepository;
 import com.experis.assignment.dao.FranchiseRepository;
 import com.experis.assignment.dao.MovieRepository;
 import com.experis.assignment.model.Character;
+import com.experis.assignment.model.Franchise;
 import com.experis.assignment.model.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,12 +44,17 @@ public class FranchiseService {
      * @return a list of characters for a given franchise,
      */
     public List<Character> getCharactersInFranchise(long id) {
-        List<Movie> movies = movieRepository.findByFranchise(repository.findById(id).get());
+        Optional<Franchise> optionalFranchise = repository.findById(id);
+        if(optionalFranchise.isEmpty())
+            return null;
+
+        List<Movie> movies = movieRepository.findByFranchise(optionalFranchise.get());
         Set<Character> characterSet = new HashSet<>();
         for (Movie movie : movies) {
             characterSet = Stream.concat(characterSet.stream(), characterRepository.findByMovies(movie).stream())
                     .collect(Collectors.toSet());
         }
+
         List<Character> characters = new ArrayList<>(characterSet);
         return characters;
     }
