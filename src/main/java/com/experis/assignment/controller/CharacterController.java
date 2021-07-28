@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CharacterController {
 
-    @Autowired
     private CharacterService characterService;
+
+    @Autowired
+    public CharacterController(CharacterService characterService) {
+        this.characterService = characterService;
+    }
 
 }

@@ -35,6 +35,12 @@ public class FranchiseService {
         return repository.existsById(id);
     }
 
+    /**
+     *
+     *
+     * @param id used to get a franchise.
+     * @return a list of characters for a given franchise,
+     */
     public List<Character> getCharactersInFranchise(long id) {
         List<Movie> movies = movieRepository.findByFranchise(repository.findById(id).get());
         Set<Character> characterSet = new HashSet<>();
