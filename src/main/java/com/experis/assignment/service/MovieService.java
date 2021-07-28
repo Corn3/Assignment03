@@ -56,6 +56,16 @@ public class MovieService {
         return repository.save(movie);
     }
 
+    /**
+     * Deletes a movie by first finding it by checking if it exists
+     * and then simply removing it if found.
+     * <p>
+     * This method will always return a boolean, indicating if the removal
+     * was successful.
+     *
+     * @param id used to identify a movie.
+     * @return a boolean for if the removal was successful.
+     */
     public boolean removeMovie(long id) {
         boolean found = repository.existsById(id);
         if (found) {
@@ -67,6 +77,12 @@ public class MovieService {
         return found;
     }
 
+    /**
+     * Updates the characters that are in the the movie,
+     * by removing the movie from those characters.
+     *
+     * @param movie used to remove a movie from characters.
+     */
     private void removeMovieFromCharacter(Movie movie) {
         List<Character> characters = actorRepository.findByMovies(movie);
         for (Character character : characters) {
@@ -75,6 +91,12 @@ public class MovieService {
         }
     }
 
+    /**
+     * Updates a franchise for the given movie by removing that movie
+     * from the franchise.
+     *
+     * @param movie used to remove movie from a franchise.
+     */
     private void removeMovieFromFranchise(Movie movie) {
         Franchise franchise = movie.getFranchise();
         franchise.removeMovie(movie);
