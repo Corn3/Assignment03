@@ -35,12 +35,9 @@ public class CharacterService {
         return repository.findAll();
     }
 
-    public boolean existsById(long id) {
-        return repository.existsById(id);
-    }
-
-    public Optional<Character> findById(long id) {
-        return repository.findById(id);
+    public Character findById(long id) {
+        Optional<Character> optionalCharacter = repository.findById(id);
+        return (optionalCharacter.isEmpty()) ? null : optionalCharacter.get();
     }
 
     public Character updateCharacter(Character character) {

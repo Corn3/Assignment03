@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/character")
+@RequestMapping("/api/v1/characters")
 public class CharacterController {
 
-    private CharacterService characterService;
+    private final CharacterService characterService;
 
     @Autowired
     public CharacterController(CharacterService characterService) {
         this.characterService = characterService;
     }
+
 
     /**
      * Adds a character passed as a parameter using the REST operation POST
@@ -35,6 +36,7 @@ public class CharacterController {
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(returnCharacter, status);
     }
+
 
     /**
      * Gets all characters in the database using the REST operation GET
@@ -61,18 +63,12 @@ public class CharacterController {
      * @return a character if found as well as the corresponding HTTP status
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Character> getACharacter(@PathVariable long id){
-        HttpStatus status;
-        Character character = new Character();
-        if(!characterService.existsById(id)){
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(character, status);
-        }
-        character = characterService.findById(id).get();
-        status = HttpStatus.OK;
+    public ResponseEntity<Character> getACharacter(@PathVariable long id) {
+        Character character = characterService.findById(id);
+        HttpStatus status = getStatus(character);
         return new ResponseEntity<>(character, status);
-
     }
+
 
     /**
      * Updates a character specified with the parameter id and the REST operation PUT
@@ -84,34 +80,30 @@ public class CharacterController {
      * @param updatedCharacter the data used to update the character
      * @return an updated character with the corresponding HTTP status
      */
-    @RequestMapping(value="/{id}", method= RequestMethod.PUT)
-    public ResponseEntity<Character> updateCharacter(@PathVariable long id, @RequestBody Character updatedCharacter){
-        HttpStatus status;
-        Character character = new Character();
-        if(characterService.existsById(id)){
-            character = characterService.findById(id).get();
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Character> updateCharacter(@PathVariable long id, @RequestBody Character updatedCharacter) {
+        Character character = characterService.findById(id);
+        HttpStatus status = getContentStatus(character);
 
-            if(updatedCharacter.getFirstName() != null){
+        if (character != null) {
+            if (updatedCharacter.getFirstName() != null) {
                 character.setFirstName(updatedCharacter.getFirstName());
             }
-            if(updatedCharacter.getLastName() != null){
+            if (updatedCharacter.getLastName() != null) {
                 character.setLastName(updatedCharacter.getLastName());
             }
-            if(updatedCharacter.getAlias() != null){
+            if (updatedCharacter.getAlias() != null) {
                 character.setAlias(updatedCharacter.getAlias());
             }
-            if(updatedCharacter.getGender() != null){
+            if (updatedCharacter.getGender() != null) {
                 character.setGender(updatedCharacter.getGender());
             }
-            if(updatedCharacter.getPicture() != null){
+            if (updatedCharacter.getPicture() != null) {
                 character.setPicture(updatedCharacter.getPicture());
             }
             characterService.save(character);
-            status = HttpStatus.OK;
-
-        }else{
-            status = HttpStatus.NO_CONTENT;
         }
+
         return new ResponseEntity<>(character, status);
     }
 
@@ -126,13 +118,18 @@ public class CharacterController {
      */
     @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteCharacter(@PathVariable long id){
-        HttpStatus status;
+
         boolean deleted = characterService.removeCharacter(id);
-        if(deleted){
-            status = HttpStatus.OK;
-        }else{
-            status = HttpStatus.NOT_FOUND;
-        }
+        HttpStatus status = (deleted) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(deleted, status);
     }
+
+    private <E> HttpStatus getStatus(E element) {
+        return (element == null) ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+    }
+
+    private <E> HttpStatus getContentStatus(E element) {
+        return (element == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
+    }
+
 }
