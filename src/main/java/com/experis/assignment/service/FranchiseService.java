@@ -57,4 +57,65 @@ public class FranchiseService {
 
         return new ArrayList<>(characterSet);
     }
+
+
+
+    public List<Movie> getMoviesInFranchise(long id) {
+        return movieRepository.getAllByFranchiseId(id);
+    }
+
+    public Franchise save(Franchise franchise) {
+        return repository.save(franchise);
+    }
+
+    public List<Franchise> findAll() {
+        return repository.findAll();
+    }
+
+    public boolean existsById(long id) {
+        return repository.existsById(id);
+    }
+
+    public Optional<Franchise> findById(long id) {
+        return repository.findById(id);
+    }
+
+    public Franchise addFranchise(Franchise franchise) {
+        return repository.save(franchise);
+    }
+
+    public Franchise updateFranchise(Franchise franchise) {
+        return repository.save(franchise);
+    }
+
+    public boolean removeFranchise(long id) {
+        boolean found = repository.existsById(id);
+        if(found){
+            Franchise franchise = repository.getById(id);
+            // ensure movies are not deleted
+
+            repository.delete(franchise);
+        }
+        return found;
+    }
+
+
+    public Franchise updateFranchiseWithMovie(long id, long movieId) {
+        Optional<Franchise> optionalFranchise = repository.findById(id);
+        if(optionalFranchise.isEmpty()){
+            return null;
+        }
+        Franchise franchise = optionalFranchise.get();
+
+        Optional<Movie> optionalMovie = movieRepository.findById(movieId);
+        if(optionalMovie.isEmpty()){
+            return null;
+        }
+        Movie movie = optionalMovie.get();
+        franchise.addMovie(movie);
+        Franchise returnFranchise = repository.save(franchise);
+        movie.setFranchise(returnFranchise);
+        movieRepository.save(movie);
+        return returnFranchise;
+    }
 }
