@@ -44,6 +44,15 @@ public class CharacterService {
         return repository.save(character);
     }
 
+    /**
+     * Removes a character in the database specified by the parameter id
+     * <p>
+     * This method returns a boolean indicating if the
+     * operation was successful or not.
+     *
+     * @param id the character primary key
+     * @return a boolean indicating if the operation was successful
+     */
     public boolean removeCharacter(long id) {
         boolean found = repository.existsById(id);
         if(found){
