@@ -101,15 +101,14 @@ public class MovieService {
 
     public Movie updateMovieWithFranchise(long id, long franchiseId) {
         Optional<Movie> optionalMovie = repository.findById(id);
+        Optional<Franchise> optionalFranchise = franchiseRepository.findById(franchiseId);
         if (optionalMovie.isEmpty())
             return null;
-        Movie movie = optionalMovie.get();
-
-        Optional<Franchise> optionalFranchise = franchiseRepository.findById(franchiseId);
-        if (optionalFranchise.isEmpty())
+        else if (optionalFranchise.isEmpty())
             return null;
-        Franchise franchise = optionalFranchise.get();
 
+        Franchise franchise = optionalFranchise.get();
+        Movie movie = optionalMovie.get();
         movie.setFranchise(franchise);
         Movie returnMovie = repository.save(movie);
         franchise.addMovie(returnMovie);
