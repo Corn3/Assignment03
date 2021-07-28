@@ -48,7 +48,7 @@ public class FranchiseController {
      * @param franchise to be added to the database
      * @return added franchise with the corresponding HTTP status
      */
-  @PostMapping
+    @PostMapping
     public ResponseEntity<Franchise> addFranchise(@RequestBody Franchise franchise) {
         Franchise returnFranchise = franchiseService.addFranchise(franchise);
         HttpStatus status = HttpStatus.CREATED;
@@ -65,7 +65,7 @@ public class FranchiseController {
      * @param id of the franchise
      * @return a list of movies in the franchise with the corresponding HTTP status
      */
-   @GetMapping(value = "/{id}/movies")
+    @GetMapping(value = "/{id}/movies")
     public ResponseEntity<List<Movie>> getAllMoviesInFranchise(@PathVariable long id) {
         List<Movie> movies = franchiseService.getMoviesInFranchise(id);
         HttpStatus status = getStatus(movies);
@@ -99,7 +99,7 @@ public class FranchiseController {
      *
      * @return a list of franchises with the corresponding HTTP status
      */
-@GetMapping
+    @GetMapping
     public ResponseEntity<List<Franchise>> getAllFranchises() {
         List<Franchise> data = franchiseService.findAll();
         HttpStatus status = HttpStatus.OK;
