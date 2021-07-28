@@ -161,11 +161,14 @@ public class MovieService {
         return returnMovie;
     }
 
+    /**
+     *
+     *
+     * @param id
+     * @return
+     */
     public List<Character> getCharactersInMovie(long id) {
         Optional<Movie> optionalMovie = repository.findById(id);
-        if (optionalMovie.isEmpty())
-            return null;
-        else
-            return actorRepository.findByMovies(optionalMovie.get());
+        return (optionalMovie.isEmpty()) ? null : actorRepository.findByMovies(optionalMovie.get());
     }
 }
