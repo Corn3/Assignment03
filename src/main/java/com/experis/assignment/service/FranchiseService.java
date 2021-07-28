@@ -16,9 +16,9 @@ import java.util.stream.Stream;
 @Service
 public class FranchiseService {
 
-    private FranchiseRepository repository;
-    private MovieRepository movieRepository;
-    private CharacterRepository characterRepository;
+    private final FranchiseRepository repository;
+    private final MovieRepository movieRepository;
+    private final CharacterRepository characterRepository;
 
     @Autowired
     public FranchiseService(FranchiseRepository repository,
@@ -55,7 +55,6 @@ public class FranchiseService {
                     .collect(Collectors.toSet());
         }
 
-        List<Character> characters = new ArrayList<>(characterSet);
-        return characters;
+        return new ArrayList<>(characterSet);
     }
 }
