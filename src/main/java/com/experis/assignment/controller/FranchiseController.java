@@ -23,6 +23,16 @@ public class FranchiseController {
         this.franchiseService = franchiseService;
     }
 
+    /**
+     * Fetches all characters in a given franchise. To obtain a franchise a valid ID must be
+     * passed in the parameter. The REST operation GET is used.
+     * <p>
+     * This method will always return a character list and a status, showing if the call was
+     * successful or not.
+     *
+     * @param id used for finding a franchise.
+     * @return a list of characters that are part of the given franchise.
+     */
     @GetMapping("/{id}/characters")
     public ResponseEntity<List<Character>> getAllCharactersInFranchise(@PathVariable long id) {
         List<Character> characters = null;
