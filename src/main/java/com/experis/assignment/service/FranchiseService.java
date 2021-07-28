@@ -93,9 +93,24 @@ public class FranchiseService {
         boolean found = repository.existsById(id);
         if(found){
             Franchise franchise = repository.getById(id);
+            removeFranchiseFromMovie(franchise);
             repository.delete(franchise);
         }
         return found;
+    }
+
+    /**
+     * Updates all movies for the given franchise by removing that franchise
+     * from those movies.
+     *
+     * @param franchise used to remove franchise from a movie.
+     */
+    private void removeFranchiseFromMovie(Franchise franchise) {
+        List<Movie> movies = movieRepository.findByFranchise(franchise);
+        for(Movie movie : movies) {
+            movie.setFranchise(null);
+            movieRepository.save(movie);
+        }
     }
 
     /**

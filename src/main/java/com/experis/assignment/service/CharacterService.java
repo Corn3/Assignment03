@@ -4,6 +4,7 @@ import com.experis.assignment.dao.CharacterRepository;
 import com.experis.assignment.dao.FranchiseRepository;
 import com.experis.assignment.dao.MovieRepository;
 import com.experis.assignment.model.Character;
+import com.experis.assignment.model.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +58,23 @@ public class CharacterService {
         boolean found = repository.existsById(id);
         if(found){
             Character character = repository.getById(id);
+            removeCharacterFromMovies(character);
             repository.delete(character);
         }
         return found;
+    }
+
+    /**
+     * Updates the movies that are in the the character,
+     * by removing the character from those movies.
+     *
+     * @param character used to remove a character from movies.
+     */
+    private void removeCharacterFromMovies(Character character) {
+        List<Movie> movies = movieRepository.findByCharacters(character);
+        for (Movie movie : movies) {
+            movie.removeCharacter(character);
+            movieRepository.save(movie);
+        }
     }
 }
