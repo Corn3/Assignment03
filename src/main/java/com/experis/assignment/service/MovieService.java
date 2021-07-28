@@ -10,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
 
-    private MovieRepository repository;
-    private CharacterRepository actorRepository;
-    private FranchiseRepository franchiseRepository;
+    private final MovieRepository repository;
+    private final CharacterRepository actorRepository;
+    private final FranchiseRepository franchiseRepository;
 
     @Autowired
     public MovieService(MovieRepository repository,
@@ -57,7 +58,7 @@ public class MovieService {
 
     public boolean removeMovie(long id) {
         boolean found = repository.existsById(id);
-        if(found) {
+        if (found) {
             Movie movie = repository.getById(id);
             removeMovieFromFranchise(movie);
             removeMovieFromCharacter(movie);
@@ -68,8 +69,7 @@ public class MovieService {
 
     private void removeMovieFromCharacter(Movie movie) {
         List<Character> characters = actorRepository.findByMovies(movie);
-        for(int i = 0; i < characters.size(); i++) {
-            Character character = characters.get(i);
+        for (Character character : characters) {
             character.removeMovie(movie);
             actorRepository.save(character);
         }
@@ -82,34 +82,46 @@ public class MovieService {
     }
 
     public Movie updateMovieWithActor(long id, long actorId) {
-        Movie movie = repository.getById(id);
-        if(movie == null)
-            return movie;
-        Character character = actorRepository.getById(actorId);
+        Optional<Movie> optionalMovie = repository.findById(id);
+        if (optionalMovie.isEmpty())
+            return null;
+        Movie movie = optionalMovie.get();
+
+        Optional<Character> optionalCharacter = actorRepository.findById(actorId);
+        if (optionalCharacter.isEmpty())
+            return null;
+        Character character = optionalCharacter.get();
+
         movie.addCharacter(character);
         Movie returnMovie = repository.save(movie);
-        if(returnMovie != null) {
-            character.addMovie(returnMovie);
-            actorRepository.save(character);
-        }
+        character.addMovie(returnMovie);
+        actorRepository.save(character);
         return returnMovie;
     }
 
     public Movie updateMovieWithFranchise(long id, long franchiseId) {
-        Movie movie = repository.getById(id);
-        if(movie == null)
-            return movie;
-        Franchise franchise = franchiseRepository.getById(franchiseId);
+        Optional<Movie> optionalMovie = repository.findById(id);
+        if (optionalMovie.isEmpty())
+            return null;
+        Movie movie = optionalMovie.get();
+
+        Optional<Franchise> optionalFranchise = franchiseRepository.findById(franchiseId);
+        if (optionalFranchise.isEmpty())
+            return null;
+        Franchise franchise = optionalFranchise.get();
+
         movie.setFranchise(franchise);
         Movie returnMovie = repository.save(movie);
-        if(returnMovie != null) {
-            franchise.addMovie(returnMovie);
-            franchiseRepository.save(franchise);
-        }
+        franchise.addMovie(returnMovie);
+        franchiseRepository.save(franchise);
         return returnMovie;
     }
 
     public List<Character> getCharactersInMovie(long id) {
-        return actorRepository.findByMovies(repository.findById(id).get());
+        Optional<Movie> optionalMovie = repository.findById(id);
+        if(optionalMovie.isEmpty())
+            return null;
+        else
+            return actorRepository.findByMovies(optionalMovie.get());
     }
 }
