@@ -67,7 +67,6 @@ public class MovieService {
     }
 
     private void handleCharacter(Movie movie) {
-        //This is such ugly way of doing things, remember to update.
         List<Character> characters = actorRepository.findByMovies(movie);
         for(int i = 0; i < characters.size(); i++) {
             Character character = characters.get(i);
