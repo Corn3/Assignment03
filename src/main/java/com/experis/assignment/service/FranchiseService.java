@@ -67,10 +67,6 @@ public class FranchiseService {
         return repository.findAll();
     }
 
-    public boolean franchiseExistsById(long id) {
-        return repository.existsById(id);
-    }
-
     public Franchise getFranchise(long id) {
         Optional<Franchise> optionalFranchise = repository.findById(id);
         return (optionalFranchise.isEmpty()) ? null : optionalFranchise.get();

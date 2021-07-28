@@ -13,9 +13,9 @@ import java.util.Optional;
 @Service
 public class CharacterService {
 
-    private CharacterRepository repository;
-    private MovieRepository movieRepository;
-    private FranchiseRepository franchiseRepository;
+    private final CharacterRepository repository;
+    private final MovieRepository movieRepository;
+    private final FranchiseRepository franchiseRepository;
 
     @Autowired
     public CharacterService(CharacterRepository repository,
