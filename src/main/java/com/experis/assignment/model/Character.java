@@ -10,6 +10,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Lombok is used here to minimize boiler plate code.
+ */
 @Entity
 @Table
 @Getter
@@ -20,16 +23,16 @@ public class Character {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name", length = 30)
+    @Column(name = "first_name", length = 40)
     private String firstName;
 
-    @Column(name = "last_name", length = 50)
+    @Column(name = "last_name", length = 60)
     private String lastName;
 
-    @Column(length = 30)
+    @Column(length = 40)
     private String alias;
 
-    @Column(length = 10)
+    @Column(length = 20)
     private String gender;
 
     @Column
@@ -40,6 +43,12 @@ public class Character {
     @ManyToMany(mappedBy = "characters")
     private List<Movie> movies;
 
+    /**
+     * Creates a list of endpoints for movies to minimize the amount of data displayed
+     * when retrieving a Character.
+     *
+     * @return a list of endpoints to be displayed to the user.
+     */
     @JsonGetter("movies")
     public List<String> movies() {
         if(movies != null) {

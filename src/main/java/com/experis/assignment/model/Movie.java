@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Lombok is used here to minimize boiler plate code.
+ */
 @Entity
 @Table
 @Data
@@ -52,6 +55,12 @@ public class Movie {
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
+    /**
+     * Creates a list of endpoints for characters to minimize the amount of data displayed
+     * when retrieving a Movie.
+     *
+     * @return a list of endpoints to be displayed to the user.
+     */
     @JsonGetter("characters")
     public List<String> characters() {
         if(characters != null) {
@@ -64,6 +73,12 @@ public class Movie {
         }
     }
 
+    /**
+     * Creates an endpoint for franchises to minimize the amount of data displayed
+     * when retrieving a Movie.
+     *
+     * @return an endpoint to be displayed to the user.
+     */
     @JsonGetter("franchise")
     public String franchise() {
         return (franchise != null) ? "/api/v1/franchises/" + franchise.getId() : null;
