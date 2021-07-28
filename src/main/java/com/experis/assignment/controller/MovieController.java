@@ -32,7 +32,7 @@ public class MovieController {
     @GetMapping
     public ResponseEntity<List<Movie>> getAllMovies() {
         List<Movie> movies = movieService.getAllMovies();
-        HttpStatus status = HttpStatus.OK;
+        HttpStatus status = getStatus(movies);
         return new ResponseEntity<>(movies, status);
     }
 
@@ -48,15 +48,8 @@ public class MovieController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable long id) {
-        Movie movie = new Movie();
-        HttpStatus status;
-
-        if (movieService.movieExist(id)) {
-            status = HttpStatus.OK;
-            movie = movieService.getMovieById(id);
-        } else {
-            status = HttpStatus.NOT_FOUND;
-        }
+        Movie movie = movieService.getMovieById(id);
+        HttpStatus status = getStatus(movie);
         return new ResponseEntity<>(movie, status);
     }
 
@@ -72,15 +65,8 @@ public class MovieController {
      */
     @GetMapping("/{title}")
     public ResponseEntity<Movie> getMovieByTitle(@PathVariable String title) {
-        Movie movie = new Movie();
-        HttpStatus status;
-
-        if (movieService.existMovieByTitle(title)) {
-            status = HttpStatus.OK;
-            movie = movieService.getMovieByTitle(title);
-        } else {
-            status = HttpStatus.NOT_FOUND;
-        }
+        Movie movie = movieService.getMovieByTitle(title);
+        HttpStatus status = getStatus(movie);
         return new ResponseEntity<>(movie, status);
     }
 
@@ -97,13 +83,8 @@ public class MovieController {
      */
     @GetMapping("/{id}/characters")
     public ResponseEntity<List<Character>> getCharactersInMovie(@PathVariable long id) {
-        List<Character> characters = null;
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        if (movieService.movieExist(id)) {
-            characters = movieService.getCharactersInMovie(id);
-            status = HttpStatus.OK;
-        }
-
+        List<Character> characters = movieService.getCharactersInMovie(id);
+        HttpStatus status = getStatus(characters);
         return new ResponseEntity<>(characters, status);
     }
 
@@ -139,17 +120,8 @@ public class MovieController {
     @PutMapping("/{id}")
     public ResponseEntity<Movie> updateMovie(@PathVariable long id,
                                              @RequestBody Movie movie) {
-
-        Movie returnMovie = new Movie();
-        HttpStatus status;
-
-        if (movie.getId() != id)
-            status = HttpStatus.BAD_REQUEST;
-        else {
-            status = HttpStatus.NO_CONTENT;
-            returnMovie = movieService.updateMovie(movie);
-        }
-
+        HttpStatus status = (movie.getId() != id) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
+        Movie returnMovie = (status == HttpStatus.NO_CONTENT) ? movieService.updateMovie(movie) : null;
         return new ResponseEntity<>(returnMovie, status);
     }
 
@@ -170,7 +142,7 @@ public class MovieController {
     public ResponseEntity<Movie> updateMovieWithActor(@PathVariable long id,
                                                       @PathVariable long actorId) {
         Movie movie = movieService.updateMovieWithActor(id, actorId);
-        HttpStatus status = (movie == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
+        HttpStatus status = getContentStatus(movie);
         return new ResponseEntity<>(movie, status);
     }
 
@@ -190,7 +162,7 @@ public class MovieController {
     public ResponseEntity<Movie> updateMovieWithFranchise(@PathVariable long id,
                                                           @PathVariable long franchiseId) {
         Movie movie = movieService.updateMovieWithFranchise(id, franchiseId);
-        HttpStatus status = (movie == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
+        HttpStatus status = getContentStatus(movie);
         return new ResponseEntity<>(movie, status);
     }
 
@@ -206,13 +178,16 @@ public class MovieController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteMovie(@PathVariable long id) {
-        HttpStatus status;
         boolean deleted = movieService.removeMovie(id);
-        if (deleted) {
-            status = HttpStatus.OK;
-        } else {
-            status = HttpStatus.NOT_FOUND;
-        }
+        HttpStatus status = (deleted) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(deleted, status);
+    }
+
+    private <E> HttpStatus getStatus(E element) {
+        return (element == null) ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+    }
+
+    private <E> HttpStatus getContentStatus(E element) {
+        return (element == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
     }
 }

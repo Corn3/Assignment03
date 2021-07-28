@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/franchises")
 public class FranchiseController {
 
-    private FranchiseService franchiseService;
+    private final FranchiseService franchiseService;
 
     @Autowired
     public FranchiseController(FranchiseService franchiseService) {
@@ -34,103 +34,87 @@ public class FranchiseController {
      */
     @GetMapping("/{id}/characters")
     public ResponseEntity<List<Character>> getAllCharactersInFranchise(@PathVariable long id) {
-        List<Character> characters = null;
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        if(franchiseService.franchiseExist(id)) {
-            characters = franchiseService.getCharactersInFranchise(id);
-            status = HttpStatus.OK;
-        }
+        List<Character> characters = franchiseService.getCharactersInFranchise(id);
+        HttpStatus status = getStatus(characters);
         return new ResponseEntity<>(characters, status);
     }
 
     // add a franchise
-    @RequestMapping(value="", method = RequestMethod.POST)
-    public ResponseEntity<Franchise> addFranchise(@RequestBody Franchise franchise){
-        Franchise returnFranchise = franchiseService.save(franchise);
+    @PostMapping
+    public ResponseEntity<Franchise> addFranchise(@RequestBody Franchise franchise) {
+        Franchise returnFranchise = franchiseService.addFranchise(franchise);
         HttpStatus status = HttpStatus.CREATED;
         return new ResponseEntity<>(returnFranchise, status);
     }
 
-    @RequestMapping(value = "/{id}/movies", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}/movies")
     public ResponseEntity<List<Movie>> getAllMoviesInFranchise(@PathVariable long id) {
-        List<Movie> movies = null;
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        if(franchiseService.franchiseExist(id)) {
-            movies = franchiseService.getMoviesInFranchise(id);
-            status = HttpStatus.OK;
-        }
+        List<Movie> movies = franchiseService.getMoviesInFranchise(id);
+        HttpStatus status = getStatus(movies);
         return new ResponseEntity<>(movies, status);
     }
 
 
     // get a franchise
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Franchise> getAFranchise(@PathVariable long id){
-        HttpStatus status;
-        Franchise franchise = new Franchise();
-        if(!franchiseService.existsById(id)){
-            status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(franchise, status);
-        }
-        franchise = franchiseService.findById(id).get();
-        status = HttpStatus.OK;
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Franchise> getAFranchise(@PathVariable long id) {
+        Franchise franchise = franchiseService.getFranchise(id);
+        HttpStatus status = getStatus(franchise);
         return new ResponseEntity<>(franchise, status);
-
     }
 
     // get all franchises
-    @RequestMapping(value="", method = RequestMethod.GET)
-    public ResponseEntity<List<Franchise>> getAllFranchises(){
+    @GetMapping
+    public ResponseEntity<List<Franchise>> getAllFranchises() {
         List<Franchise> data = franchiseService.findAll();
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(data, status);
     }
 
     // update a franchise
-    @RequestMapping(value="/{id}", method= RequestMethod.PUT)
-    public ResponseEntity<Franchise> updateFranchise(@PathVariable long id, @RequestBody Franchise updatedFranchise){
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Franchise> updateFranchise(@PathVariable long id, @RequestBody Franchise updatedFranchise) {
         HttpStatus status;
-        Franchise franchise = new Franchise();
-        if(franchiseService.existsById(id)){
-            franchise = franchiseService.findById(id).get();
-
-            if(updatedFranchise.getName() != null){
+        Franchise franchise = franchiseService.getFranchise(id);
+        if (franchise != null) {
+            if (updatedFranchise.getName() != null)
                 franchise.setName(updatedFranchise.getName());
-            }
-            if(updatedFranchise.getDescription() != null){
+            if (updatedFranchise.getDescription() != null)
                 franchise.setDescription(updatedFranchise.getDescription());
-            }
-            franchiseService.save(franchise);
+
+            franchiseService.updateFranchise(franchise);
             status = HttpStatus.OK;
 
-        }else{
+        } else {
             status = HttpStatus.NO_CONTENT;
         }
         return new ResponseEntity<>(franchise, status);
     }
 
     // delete a franchise
-    @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteFranchise(@PathVariable long id){
-        HttpStatus status;
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Boolean> deleteFranchise(@PathVariable long id) {
         boolean deleted = franchiseService.removeFranchise(id);
-        if(deleted){
-            status = HttpStatus.OK;
-        }else{
-            status = HttpStatus.NOT_FOUND;
-        }
+        HttpStatus status = (deleted) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(deleted, status);
     }
 
     // updating movies in a franchise
-    @RequestMapping(value="/{id}/movies/{movieId}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}/movies/{movieId}")
     public ResponseEntity<Franchise> updateMovieInFranchise(@PathVariable long id,
                                                             @PathVariable long movieId) {
         Franchise franchise = franchiseService.updateFranchiseWithMovie(id, movieId);
-        HttpStatus status = (franchise == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
+        HttpStatus status = getContentStatus(franchise);
         return new ResponseEntity<>(franchise, status);
     }
 
+    private <E> HttpStatus getStatus(E element) {
+        return (element == null) ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+    }
+
+    private <E> HttpStatus getContentStatus(E element) {
+        return (element == null) ? HttpStatus.BAD_REQUEST : HttpStatus.NO_CONTENT;
+    }
 
 
 }

@@ -37,15 +37,12 @@ public class MovieService {
     }
 
     public Movie getMovieById(long id) {
-        return repository.getById(id);
+        Optional<Movie> optionalMovie = repository.findById(id);
+        return (optionalMovie.isEmpty()) ? null : optionalMovie.get();
     }
 
     public Movie getMovieByTitle(String title) {
         return repository.findByTitle(title);
-    }
-
-    public boolean existMovieByTitle(String title) {
-        return repository.existsByTitle(title);
     }
 
     public Movie addMovie(Movie movie) {

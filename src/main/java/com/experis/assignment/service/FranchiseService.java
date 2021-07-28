@@ -64,20 +64,17 @@ public class FranchiseService {
         return movieRepository.getAllByFranchiseId(id);
     }
 
-    public Franchise save(Franchise franchise) {
-        return repository.save(franchise);
-    }
-
     public List<Franchise> findAll() {
         return repository.findAll();
     }
 
-    public boolean existsById(long id) {
+    public boolean franchiseExistsById(long id) {
         return repository.existsById(id);
     }
 
-    public Optional<Franchise> findById(long id) {
-        return repository.findById(id);
+    public Franchise getFranchise(long id) {
+        Optional<Franchise> optionalFranchise = repository.findById(id);
+        return (optionalFranchise.isEmpty()) ? null : optionalFranchise.get();
     }
 
     public Franchise addFranchise(Franchise franchise) {
@@ -102,15 +99,13 @@ public class FranchiseService {
 
     public Franchise updateFranchiseWithMovie(long id, long movieId) {
         Optional<Franchise> optionalFranchise = repository.findById(id);
-        if(optionalFranchise.isEmpty()){
-            return null;
-        }
-        Franchise franchise = optionalFranchise.get();
-
         Optional<Movie> optionalMovie = movieRepository.findById(movieId);
-        if(optionalMovie.isEmpty()){
+        if(optionalFranchise.isEmpty())
             return null;
-        }
+        else if(optionalMovie.isEmpty())
+            return null;
+
+        Franchise franchise = optionalFranchise.get();
         Movie movie = optionalMovie.get();
         franchise.addMovie(movie);
         Franchise returnFranchise = repository.save(franchise);
