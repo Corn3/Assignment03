@@ -81,17 +81,28 @@ public class MovieService {
         franchiseRepository.save(franchise);
     }
 
+    /**
+     * Updates a movie with a character, by using the parameters
+     * this methode checks if they both exists and then adds
+     * the character to the movie.
+     * <p>
+     * This method always returns a movie object or null if one of the IDs
+     * are wrong.
+     *
+     * @param id          a long used to identify a movie.
+     * @param actorId a long used to identify a character.
+     * @return the specified movie update with a character.
+     */
     public Movie updateMovieWithActor(long id, long actorId) {
         Optional<Movie> optionalMovie = repository.findById(id);
+        Optional<Character> optionalCharacter = actorRepository.findById(actorId);
         if (optionalMovie.isEmpty())
             return null;
-        Movie movie = optionalMovie.get();
-
-        Optional<Character> optionalCharacter = actorRepository.findById(actorId);
-        if (optionalCharacter.isEmpty())
+        else if (optionalCharacter.isEmpty())
             return null;
-        Character character = optionalCharacter.get();
 
+        Movie movie = optionalMovie.get();
+        Character character = optionalCharacter.get();
         movie.addCharacter(character);
         Movie returnMovie = repository.save(movie);
         character.addMovie(returnMovie);
@@ -99,6 +110,18 @@ public class MovieService {
         return returnMovie;
     }
 
+    /**
+     * Updates a movie with a franchise, by using the parameters
+     * this methode checks if they both exists and then adds
+     * the franchise to the movie.
+     * <p>
+     * This method always returns a movie object or null if one of the IDs
+     * are wrong.
+     *
+     * @param id          a long used to identify a movie.
+     * @param franchiseId a long used to identify a franchise.
+     * @return the specified movie update with a franchise.
+     */
     public Movie updateMovieWithFranchise(long id, long franchiseId) {
         Optional<Movie> optionalMovie = repository.findById(id);
         Optional<Franchise> optionalFranchise = franchiseRepository.findById(franchiseId);
@@ -118,7 +141,7 @@ public class MovieService {
 
     public List<Character> getCharactersInMovie(long id) {
         Optional<Movie> optionalMovie = repository.findById(id);
-        if(optionalMovie.isEmpty())
+        if (optionalMovie.isEmpty())
             return null;
         else
             return actorRepository.findByMovies(optionalMovie.get());
