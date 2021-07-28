@@ -59,14 +59,14 @@ public class MovieService {
         boolean found = repository.existsById(id);
         if(found) {
             Movie movie = repository.getById(id);
-            handleFranchise(movie);
-            handleCharacter(movie);
+            removeMovieFromFranchise(movie);
+            removeMovieFromCharacter(movie);
             repository.delete(movie);
         }
         return found;
     }
 
-    private void handleCharacter(Movie movie) {
+    private void removeMovieFromCharacter(Movie movie) {
         List<Character> characters = actorRepository.findByMovies(movie);
         for(int i = 0; i < characters.size(); i++) {
             Character character = characters.get(i);
@@ -75,7 +75,7 @@ public class MovieService {
         }
     }
 
-    private void handleFranchise(Movie movie) {
+    private void removeMovieFromFranchise(Movie movie) {
         Franchise franchise = movie.getFranchise();
         franchise.removeMovie(movie);
         franchiseRepository.save(franchise);
