@@ -162,10 +162,13 @@ public class MovieService {
     }
 
     /**
+     * Retrieves a list of characters for the specified movie found using this method's
+     * ID parameter.
+     * <p>
+     * This method returns immediately a list of characters or null if the movie was not found.
      *
-     *
-     * @param id
-     * @return
+     * @param id used to identify a movie.
+     * @return a list of characters that partook in the creation of the movie.
      */
     public List<Character> getCharactersInMovie(long id) {
         Optional<Movie> optionalMovie = repository.findById(id);
