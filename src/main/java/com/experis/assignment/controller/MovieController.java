@@ -63,7 +63,7 @@ public class MovieController {
      * @return a movie if one with the specific title was found, together with a HTTP status
      * for if the retrieval was successful.
      */
-    @GetMapping("/{title}")
+    @GetMapping("/title/{title}")
     public ResponseEntity<Movie> getMovieByTitle(@PathVariable String title) {
         Movie movie = movieService.getMovieByTitle(title);
         HttpStatus status = getStatus(movie);
