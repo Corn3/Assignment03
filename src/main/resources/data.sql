@@ -12,3 +12,8 @@ insert into movie (id, title, genre, release_year, trailer, director_name, pictu
 insert into movie (id, title, genre, release_year, trailer, director_name, picture, franchise_id) values (2, 'Samaritan, The', 'Drama|Thriller', 1967, 'https://spotify.com/est/', 'Nellie', 'http://dummyimage.com/165x100.png/dddddd/000000',2);
 insert into movie (id, title, genre, release_year, trailer, director_name, picture, franchise_id) values (3, 'Love Hina', 'Animation|Comedy|Romance', 1958, 'https://about.com/nulla/tellus/in', 'Anne', 'http://dummyimage.com/176x100.png/5fa2dd/ffffff',3);
 insert into movie (id, title, genre, release_year, trailer, director_name, picture, franchise_id) values (4, 'Brood, The', 'Horror', 2020, 'https://guardian.co.uk/diam/neque.js?cum=praesent', 'Jarad', 'http://dummyimage.com/152x100.png/ff4444/ffffff',4);
+
+insert into movie_character (movie_id, character_id) values(1,1);
+insert into movie_character (movie_id, character_id) values(2,2);
+insert into movie_character (movie_id, character_id) values(3,3);
+insert into movie_character (movie_id, character_id) values(4,4);
