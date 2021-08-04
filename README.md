@@ -13,7 +13,7 @@ The following project supports all the base REST operations including:
 * PUT
 * POST
 
-This was tested using the following endpoints in Postman:
+These operations were tested using the following endpoints in Postman:
 * GET:
   * localhost:8080/api/v1/movies
   * localhost:8080/api/v1/movies/6/characters
